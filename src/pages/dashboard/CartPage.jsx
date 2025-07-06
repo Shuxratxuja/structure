@@ -29,6 +29,7 @@ const CartPage = () => {
           </div>
           <div className="flex flex-col px-4 my-1">
             <h3 className="mb-3">{item.name}</h3>
+            <h3 className="mb-3">{item.quantity}</h3>
             <p className="line-clamp-2 ">{item.description}</p>
             <div className="flex items-center justify-between mt-5">
               <strong>{formatPrice(item.price)}</strong>

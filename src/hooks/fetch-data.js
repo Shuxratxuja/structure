@@ -1,16 +1,18 @@
-import { DOMAIN } from '@/constants';
+import { DOMAIN, LIMIT } from '@/constants';
 import request from '@/services';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-const fetchData = async ({ url }) => {
-  const response = await request(`${DOMAIN}/${url}`);
+const fetchData = async ({ url, page }) => {
+  const response = await request(
+    `${DOMAIN}/${url}?page=${page}&limit=${LIMIT}`
+  );
   return response.data;
 };
 
-export const useGetData = (url) => {
+export const useGetData = (url, page) => {
   return useQuery({
-    queryKey: [url],
-    queryFn: () => fetchData({ url }),
+    queryKey: [url, page],
+    queryFn: () => fetchData({ url, page }),
     onError: (error) => {
       toast.error('boreee');
       console.log(error);
