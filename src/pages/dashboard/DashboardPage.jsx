@@ -11,6 +11,7 @@ import {
   CircleCheckBig,
   Heart,
   ShoppingCart,
+  Search,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,10 +23,9 @@ const DashboardPage = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const inputRef = useRef(null);
-
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: categoryData, isLoading } = useGetData(
+  const { data: categoryData, isLoading, error } = useGetData(
     CATEGORY,
     page,
     'name',
@@ -70,13 +70,16 @@ const DashboardPage = () => {
 
   return (
     <div className="py-10 container">
-      <Input
-        ref={inputRef}
-        placeholder="Search by name"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-5 w-full max-w-md"
-      />
+      <div className="relative max-w-md mb-6">
+        <Input
+          ref={inputRef}
+          placeholder="Search by name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pr-10"
+        />
+        <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+      </div>
 
       {isLoading ? (
         <div className="text-2xl font-bold text-black">Loading...</div>
@@ -86,7 +89,7 @@ const DashboardPage = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
             {categoryData?.map((item) => {
               const isFav = isItemFavorite(item.id);
               return (
@@ -97,13 +100,13 @@ const DashboardPage = () => {
                   <div className="h-[180px] w-full overflow-hidden">
                     <img
                       src={item?.image}
-                      alt=""
+                      alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-110 duration-300 transition-transform"
                     />
                   </div>
                   <div className="flex flex-col px-4 my-1">
-                    <h3 className="mb-3">{item.name}</h3>
-                    <p className="line-clamp-2">{item.description}</p>
+                    <h3 className="mb-3 font-semibold">{item.name}</h3>
+                    <p className="line-clamp-2 text-sm text-gray-500">{item.description}</p>
                     <div className="flex items-center justify-between mt-5">
                       <strong>{formatPrice(item.price)}</strong>
                       <span>{item.inStock} шт</span>
@@ -133,8 +136,8 @@ const DashboardPage = () => {
             <button
               disabled={page <= 1}
               className={`px-4 py-2 rounded-md font-bold text-xl ${page <= 1
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'bg-black text-white'
+                ? 'opacity-50 cursor-not-allowed'
+                : 'bg-black text-white'
                 }`}
               onClick={() => {
                 if (page > 1) setPage(page - 1);
@@ -158,7 +161,6 @@ const DashboardPage = () => {
       )}
     </div>
   );
-
 };
 
 export default DashboardPage;
