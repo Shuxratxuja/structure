@@ -69,7 +69,15 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="py-10">
+    <div className="py-10 container">
+      <Input
+        ref={inputRef}
+        placeholder="Search by name"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-5 w-full max-w-md"
+      />
+
       {isLoading ? (
         <div className="text-2xl font-bold text-black">Loading...</div>
       ) : categoryData?.length === 0 ? (
@@ -77,15 +85,7 @@ const DashboardPage = () => {
           Hech narsa topilmadi
         </div>
       ) : (
-        <div className="container">
-          <Input
-            ref={inputRef}
-            placeholder="Search by name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="mb-5 w-full max-w-md"
-          />
-
+        <>
           <div className="grid grid-cols-4 gap-10">
             {categoryData?.map((item) => {
               const isFav = isItemFavorite(item.id);
@@ -132,11 +132,10 @@ const DashboardPage = () => {
           <div className="flex justify-center items-center gap-10 mt-10">
             <button
               disabled={page <= 1}
-              className={`px-4 py-2 rounded-md font-bold text-xl ${
-                page <= 1
+              className={`px-4 py-2 rounded-md font-bold text-xl ${page <= 1
                   ? 'opacity-50 cursor-not-allowed'
                   : 'bg-black text-white'
-              }`}
+                }`}
               onClick={() => {
                 if (page > 1) setPage(page - 1);
               }}
@@ -155,10 +154,11 @@ const DashboardPage = () => {
               <ArrowRight />
             </button>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
+
 };
 
 export default DashboardPage;
