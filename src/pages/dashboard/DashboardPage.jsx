@@ -76,9 +76,9 @@ const DashboardPage = () => {
           placeholder="Search by name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pr-10"
+          className="pr-10 w-[300px]"
         />
-        <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+        <Search className="absolute left-64 top-2.5 text-gray-400" size={20} />
       </div>
 
       {isLoading ? (
