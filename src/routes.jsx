@@ -5,6 +5,8 @@ import ProductPage from './pages/dashboard/ProductPage';
 import AuthLayout from './layouts/AuthLayout';
 import SigninPage from './pages/auth/SigninPage';
 import CartPage from './pages/dashboard/CartPage';
+import PrivateRoute from './pages/rout/PrivateRouter';
+import { Favorites } from './pages/dashboard/Favorites';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,20 @@ const router = createBrowserRouter([
       },
       {
         path: '/cart',
-        element: <CartPage />,
+        element: (
+          <PrivateRoute>
+            <CartPage />
+          </PrivateRoute>
+        )
       },
+      {
+        path: '/favorite',
+        element: (
+          <PrivateRoute>
+            <Favorites />
+          </PrivateRoute>
+        )
+      }
     ],
   },
   {

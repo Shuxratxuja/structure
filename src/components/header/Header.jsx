@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../button';
 import { logout } from '@/redux/slices/authSlice';
+import { Heart, ShoppingBag } from 'lucide-react';
 
 export const Header = () => {
   const cart = useSelector((s) => s.all.cart);
@@ -34,13 +35,16 @@ export const Header = () => {
           </Button>
           <Link
             to={'/cart'}
-            className={`text-2xl px-7 font-bold  bg-amber-500 text-white rounded-md  py-2 flex items-center gap-1 $`}
+            className={`text-2xl px-7 font-bold  bg-amber-500 text-white rounded-md  py-3 flex items-center gap-1 $`}
           >
-            Cart
+            <ShoppingBag />
             {cart.length !== 0 && (
               <span className="text-red-600">({cart.length})</span>
             )}
           </Link>
+          <Link
+            to={'/favorite'}
+            className={`text-2xl px-7 font-bold  bg-amber-500 text-white rounded-md  py-3 flex items-center gap-1 $`}><Heart/></Link>
         </div>
       </div>
     </header>
