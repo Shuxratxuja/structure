@@ -5,8 +5,14 @@ import { useGetData } from '@/hooks/fetch-data';
 import { useDebounce } from '@/hooks/useDebounce';
 import { addToCart, favoriteProduct } from '@/redux/slices/authSlice';
 import { formatPrice } from '@/utils';
-import { ArrowLeft, ArrowRight, CircleCheckBig, Heart, ShoppingCart } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  CircleCheckBig,
+  Heart,
+  ShoppingCart,
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -15,15 +21,35 @@ const DashboardPage = () => {
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const inputRef = useRef(null);
+
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: categoryData, isLoading } = useGetData(CATEGORY, page, 'name', debouncedSearch);
+  const { data: categoryData, isLoading } = useGetData(
+    CATEGORY,
+    page,
+    'name',
+    debouncedSearch
+  );
+
   const favorites = useSelector((state) => state.all.favorites);
   const cart = useSelector((state) => state.all.cart);
 
   useEffect(() => {
-    setPage(1);
+    if (page !== 1) setPage(1);
   }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (!isLoading && categoryData?.length === 0 && search) {
+      toast.info('Hech qanday natija topilmadi');
+    }
+  }, [isLoading, categoryData, search]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [categoryData]);
 
   const handleToCart = (product) => {
     dispatch(addToCart(product));
@@ -31,24 +57,16 @@ const DashboardPage = () => {
   };
 
   const isItemInCart = (id) => cart.some((el) => el.id === id);
-
   const isItemFavorite = (id) => favorites.some((el) => el.id === id);
 
   const toggleFavorite = (item) => {
     dispatch(favoriteProduct(item));
-
     if (isItemFavorite(item.id)) {
       toast.info(`${item.name} sevimlilardan o‘chirildi`);
     } else {
       toast.success(`${item.name} sevimlilarga qo‘shildi`);
     }
   };
-
-  useEffect(() => {
-    if (!isLoading && categoryData?.length === 0 && search) {
-      toast.info('Hech qanday natija topilmadi');
-    }
-  }, [isLoading, categoryData, search]);
 
   return (
     <div className="py-10">
@@ -61,11 +79,13 @@ const DashboardPage = () => {
       ) : (
         <div className="container">
           <Input
+            ref={inputRef}
             placeholder="Search by name"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="mb-5 w-full max-w-md"
           />
+
           <div className="grid grid-cols-4 gap-10">
             {categoryData?.map((item) => {
               const isFav = isItemFavorite(item.id);
@@ -92,7 +112,7 @@ const DashboardPage = () => {
                     <div className="mt-10 flex justify-between">
                       {isItemInCart(item.id) ? (
                         <Button disabled className="opacity-70 cursor-default">
-                          <CircleCheckBig/>
+                          <CircleCheckBig />
                         </Button>
                       ) : (
                         <Button onClick={() => handleToCart(item)}>
@@ -109,17 +129,25 @@ const DashboardPage = () => {
             })}
           </div>
 
-          <div className="flex justify-center gap-10 mt-10">
+          <div className="flex justify-center items-center gap-10 mt-10">
             <button
               disabled={page <= 1}
-              className={`px-4 py-2 rounded-md font-bold text-xl ${page <= 1 ? 'opacity-50 cursor-not-allowed' : 'bg-black text-white'
-                }`}
+              className={`px-4 py-2 rounded-md font-bold text-xl ${
+                page <= 1
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'bg-black text-white'
+              }`}
               onClick={() => {
                 if (page > 1) setPage(page - 1);
               }}
             >
               <ArrowLeft />
             </button>
+
+            <span className="text-lg font-semibold">
+              <span className="font-bold">{page}</span>
+            </span>
+
             <button
               className="cursor-pointer px-4 py-2 bg-black text-white rounded-md font-bold text-xl"
               onClick={() => setPage(page + 1)}

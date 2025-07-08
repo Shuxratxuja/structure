@@ -35,7 +35,7 @@ export const Header = () => {
           </Button>
           <Link
             to={'/cart'}
-            className={`text-2xl px-7 font-bold  bg-amber-500 text-white rounded-md  py-3 flex items-center gap-1 $`}
+            className={`text-2xl px-7 font-bold  bg-amber-500 text-white rounded-md  py-2 flex items-center gap-1 $`}
           >
             <ShoppingBag />
             {cart.length !== 0 && (
