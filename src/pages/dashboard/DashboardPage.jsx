@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {  RingLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 
 const DashboardPage = () => {
@@ -82,7 +83,7 @@ const DashboardPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="text-2xl font-bold text-black">Loading...</div>
+        <div className="text-2xl font-bold text-black flex justify-center items-center h-full mt-[200px]"><RingLoader/></div>
       ) : categoryData?.length === 0 ? (
         <div className="text-xl font-semibold text-center text-gray-500 mt-10">
           Hech narsa topilmadi
