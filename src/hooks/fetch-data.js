@@ -15,6 +15,7 @@ export const useGetData = (url, page, searchKey, searchValue) => {
   return useQuery({
     queryKey: [url, page, searchKey, searchValue],
     queryFn: () => fetchData({ url, page, searchKey, searchValue }),
+    retry: 1,
     onError: (error) => {
       toast.error('Xatolik yuz berdi');
       console.error(error);

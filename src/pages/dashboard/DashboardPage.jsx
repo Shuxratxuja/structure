@@ -81,14 +81,15 @@ const DashboardPage = () => {
         />
         <Search className="absolute left-64 top-2.5 text-gray-400" size={20} />
       </div>
+      {error?.response?.status === 404 && (
+        <div className="text-red-500 text-center text-xl font-bold">
+          Mahsulot topilmadi!
+        </div>  
+      )}
 
       {isLoading ? (
         <div className="text-2xl font-bold text-black flex justify-center items-center h-full mt-[200px]"><RingLoader/></div>
-      ) : categoryData?.length === 0 ? (
-        <div className="text-xl font-semibold text-center text-gray-500 mt-10">
-          Hech narsa topilmadi
-        </div>
-      ) : (
+      ) :  (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
             {categoryData?.map((item) => {

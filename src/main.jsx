@@ -9,7 +9,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './redux/store';
 const queryClient = new QueryClient();
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate loading={'loading'} persistor={persistor}>
@@ -18,5 +17,4 @@ createRoot(document.getElementById('root')).render(
         </PersistGate>
       </Provider>
     </QueryClientProvider>
-  </StrictMode>
 );
