@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <PersistGate loading={'loading'} persistor={persistor}>
           <App />
-          <ToastContainer position='top-center' theme='colored' />
+          <ToastContainer position='top-center' theme='colored' draggable />
         </PersistGate>
       </Provider>
     </QueryClientProvider>
